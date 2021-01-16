@@ -17,5 +17,32 @@ class Card(object):
   def getSuit(self):
     return self.suit
 
+  def valToFace(self):
+    faces = {
+      1: 'Ace',
+      2: '2',
+      3: '3',
+      4: '4',
+      5: '5',
+      6: '6',
+      7: '7',
+      8: '8',
+      9: '9',
+      10: '10',
+      11: 'Jack',
+      12: 'Queen',
+      13: 'King'
+    }
+    return faces[self.value]
+
+  def suitToString(self):
+    suits = {
+      Suit.CLUBS: 'Clubs',
+      Suit.DIAMONDS: 'Diamonds',
+      Suit.HEARTS: 'Hearts',
+      Suit.SPADES: 'Spades'
+    }
+    return suits[self.suit]
+
   def __repr__(self):
-    return f'{self.value} of {self.suit}'
+    return self.valToFace() + ' \t' + self.suitToString()

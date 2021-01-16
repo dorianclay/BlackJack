@@ -19,7 +19,15 @@ The Single Responsibility Principle (SRP) states that any class must have one, a
 
 The motivation is to minimize changes we will have to make, when inevitably requirements change.
 
-### O:
+### O: Open-Closed Principle
+
+Open for extension, closed for modification.
+
+E.g. what if someone wanted to create a hearts game using the code we used for our blackjack game? 
+
+If they can increase complexity or add features, then we've succeeded in being "open for extension."
+
+If they don't have to modify any of our code to make their game, then we've succeeded in being "closed for modification."
 
 ### L:
 
