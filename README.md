@@ -26,3 +26,33 @@ The motivation is to minimize changes we will have to make, when inevitably requ
 ### I:
 
 ### D:
+
+## Card Class
+
+- A number and a suit
+- Suits:
+  - Clubs
+  - Diamonds
+  - Hearts
+  - Spades
+
+## Deck Class
+
+- Keeps track of cards.
+- Maintains suits.
+- Maintains number range.
+- Could be changed for different card types (e.g. ace high/low).
+- Should be able to see contents of deck.
+- Should be able to modify contents of deck.
+- Each card: number and suit
+
+## Game Deck Class
+
+- Constructed out of several `deck` classes.
+- Could change if we want more than one deck.
+- Draw cards.
+
+## Blackjack Point Class
+
+- Determines the point value of a given card.
+- e.g. aces worth 1 or 11.
