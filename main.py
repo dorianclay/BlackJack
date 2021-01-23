@@ -1,8 +1,8 @@
-from blackjack_dealer import BlackjackDealer
-from blackjack_game import BlackjackGame
-from deck import Deck
-from game_deck import GameDeck
-from player import Player
+from library.deck import Deck
+from library.game_deck import GameDeck
+from library.player import Player
+from src.blackjack.blackjack_dealer import BlackjackDealer
+from src.blackjack.blackjack_game import BlackjackGame
 
 from time import sleep
 

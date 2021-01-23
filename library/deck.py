@@ -1,5 +1,5 @@
-from card import Card
-from card import Suit
+from library.card import Card
+from library.card import Suit
 
 class Deck(object):
   def __init__(self):

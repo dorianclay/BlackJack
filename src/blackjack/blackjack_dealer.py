@@ -1,4 +1,4 @@
-from dealer import Dealer
+from library.dealer import Dealer
 
 class BlackjackDealer(Dealer):
 

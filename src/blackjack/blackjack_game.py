@@ -1,4 +1,4 @@
-from game import Game
+from library.game import Game
 
 class BlackjackGame(Game):
   def __init__(self, dealer, players):

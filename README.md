@@ -29,7 +29,11 @@ If they can increase complexity or add features, then we've succeeded in being "
 
 If they don't have to modify any of our code to make their game, then we've succeeded in being "closed for modification."
 
-### **L:**
+### **L:** Liskov Substitution Principle
+
+If you have a superclass, then anytime you create a subclass, you should be able to use that subclass anywhere the superclass is used.
+
+Example: the rubber duck class. If we create a robot duck class, then we need to add a "replace battery" function. If we have a list of rubber ducks, we can't just give a list of robot ducks, because it won't know about those extra requirements.
 
 ### **I:**
 
