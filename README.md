@@ -13,13 +13,13 @@ A project to practice the SOLID OOP Design Principles.
 
 ## SOLID Principles
 
-### S: Single Responsibility Principle
+### **S:** Single Responsibility Principle
 
 The Single Responsibility Principle (SRP) states that any class must have one, and only one, reason to change. If a class has more than one reason to change, it should be refactored (larger, structural editing).
 
 The motivation is to minimize changes we will have to make, when inevitably requirements change.
 
-### O: Open-Closed Principle
+### **O:** Open-Closed Principle
 
 Open for extension, closed for modification.
 
@@ -29,11 +29,19 @@ If they can increase complexity or add features, then we've succeeded in being "
 
 If they don't have to modify any of our code to make their game, then we've succeeded in being "closed for modification."
 
-### L:
+### **L:**
 
-### I:
+### **I:**
 
-### D:
+### **D:**
+
+### Refuse Bequest Antipattern
+
+Whenever there are subclasses, must think about whether they'll make use of what the parent class has. If parent classes have too many methods, then the subclasses basically just implement empty versions.
+
+One way to get around this is to design with **composition over inheritance**. This means rather than inheriting from a class, create a class that is a composition of multiple classes. This prevents getting locked into a heirarchy.
+
+Classic example: if you want to list a bunch of things, and want some properties surrounding it, don't create a subclass of an array. Instead, you create a class that has an array and also the other properties that you want.
 
 ## Card Class
 
@@ -64,3 +72,31 @@ If they don't have to modify any of our code to make their game, then we've succ
 
 - Determines the point value of a given card.
 - e.g. aces worth 1 or 11.
+
+## Dealer Class
+
+- Abstract/virtual class: intended that a subclass is instatiated.
+- Initially deals cards to all players.
+- Draw a card for a given player.
+
+### BlackJack Dealer Class
+
+- Deals two cards to each player.
+- Draw a card for tne given player.
+
+## Player Class
+
+- Name.
+- Hand (cards).
+
+## Game Class (GameObject)
+
+- Abstract class.
+- Starts with an array of players and a dealer.
+- Play a turn of the game.
+
+## BlackJack Game Class
+
+- Starts with an array of players and a dealer.
+- When playing a turn:
+  - Force them to take another card!
