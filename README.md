@@ -11,6 +11,18 @@ A project to practice the SOLID OOP Design Principles.
 6. If you stay, the dealer hits until they are over 16.
 7. Highest point value under 22 wins. Player wins ties.
 
+## Why Object Oriented Programming
+
+We have classes, which are a blueprint for an object. This abstracts away the implementation of the object.
+
+OOP provides abstraction so that we know how a class is used, but don't have to know how it works.
+
+Some of these basics exist in C as well, such as with `struct` and header files.
+
+Above all, OOP provides *polymorphism*. This allows us to refer to an object as if it were a different kind of object, as long as they're in the same inheritance tree. This allows us to write code that acts as a "plugin," where the client can implement their own version of a class with its own behaviors.
+
+Polymorphism is extremely important and helpful. For instance, if we use mySQL for a database, then want to switch from MongoDB, it's easy to switch if there's a "middleman" access layer.
+
 ## SOLID Principles
 
 ### **S:** Single Responsibility Principle
@@ -33,11 +45,19 @@ If they don't have to modify any of our code to make their game, then we've succ
 
 If you have a superclass, then anytime you create a subclass, you should be able to use that subclass anywhere the superclass is used.
 
+If you're going to use a substitution, any methods it uses from the parent class shouldn't have suprising side effects or behavior that the person wouldn't expect.
+
 Example: the rubber duck class. If we create a robot duck class, then we need to add a "replace battery" function. If we have a list of rubber ducks, we can't just give a list of robot ducks, because it won't know about those extra requirements.
+
+If we have to create a robot duck, don't subclass duck. A separate class should be made, probably as a composition of the duck and additional logic around the battery.
+
+E.g. we have a data access layer, we shouldn't do something or have properties that require special attention.
 
 ### **I:**
 
-### **D:**
+### **D:** Dependency Inversion Principle
+
+
 
 ### Refuse Bequest Antipattern
 

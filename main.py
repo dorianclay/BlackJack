@@ -14,17 +14,10 @@ def main():
   game = BlackjackGame(dealer, players)
 
   dealer.deal(players)
-  print_players(players)
 
-  sleep(2)
-  game.take_turn()
-  print_players(players)
-  sleep(2)
-  game.take_turn()
-  print_players(players)
-  sleep(2)
-  game.take_turn()
-  print_players(players)
+  while game.player_turns_left():
+    print_players(players)
+    game.take_turn()
 
 def print_players(players):
   for player in players:
