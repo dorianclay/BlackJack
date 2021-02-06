@@ -44,5 +44,8 @@ class Card(object):
     }
     return suits[self.suit]
 
+  def __eq__(self, other_card):
+    return self.value == other_card.value and self.suit == other_card.suit
+
   def __repr__(self):
     return self.valToFace() + ' \t' + self.suitToString()
