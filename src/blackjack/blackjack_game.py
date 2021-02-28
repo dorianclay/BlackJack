@@ -15,11 +15,13 @@ class BlackjackGame(Game):
       'Stay': self.next_player,
     }
 
+  # Player should engage BlackJackGame, rather than Game asking player to take a turn.
   def take_turn(self):
     if not self.player_turns_left():
       return
     player = self.players[self.current_player_index]
     # Use dependency injection so BlackjackGame doesn't know about CLI Prompt.
+    # e.g. so that if we have a web version, the request can come from a different source than CLI.
     prompt = Prompt(f'{player.name}\'s turn.', self.action_map)
     prompt.act()
 

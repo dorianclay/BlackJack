@@ -57,7 +57,7 @@ E.g. we have a data access layer, we shouldn't do something or have properties t
 
 ### **D:** Dependency Inversion Principle
 
-
+Use interfaces if the implementation knows too much about the class it's referring to.
 
 ### Refuse Bequest Antipattern
 
