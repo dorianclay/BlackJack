@@ -1,1 +1,5 @@
-<p>{{ name }}'s score: {{ score }}</p>
+<p>{{ playerModel.metadata.name }} has {{ playerModel.score }} points.</p>
+
+<p *ngFor="let card of playerModel.cards"> {{ textForCard(card) }} </p>
+
+<button (click)="onHit()">Hit</button>
