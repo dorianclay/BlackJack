@@ -1,28 +1,39 @@
-class Prompt(object):
-  def __init__(self, prompt, action_map):
-    self.action_map = action_map
-    self.choices = list(action_map.keys())
-    self.prompt = prompt + '\n'
-    self.prompt = self.prompt + ('-' * 20) + '\n'
-    for index, choice in enumerate(self.choices):
-      self.prompt = self.prompt + f'{index + 1}: {choice}\n'
-  
-  def act(self):
-    print(self.prompt)
-    choice = self.safely_get_input() - 1
-    if choice < 0 or choice >= len(self.choices):
-      print(f'Choose a valid option between 1 - {len(self.choices) -1}\n')
-      self.act()
-    key = self.choices[choice]
-    action = self.action_map[key]
-    action()
-  
-  def safely_get_input(self):
-    # Exception catch should be in its own function, as it is here.
+import sys
+
+class Prompt:
+  def __init__(self, prompt, menu):
+    self.prompt = prompt
+    self.menu = menu
+
+  def get_choice_index_from_menu(self):
+    choice_index = self.get_input_from_menu()
+    if self.is_choice_out_of_bounds(choice_index):
+      print(f'Choose a valid option between 1 - {len(self.choice_index) -1}\n')
+      return self.get_choice_index_from_menu()
+    return choice_index
+
+  def get_input_from_menu(self):
+    self.display_prompt()
+    user_input = input('>>> ')
+    self.check_for_exit_command(user_input)
+    return self.safely_get_input_from_menu(user_input)
+
+  def safely_get_input_from_menu(self, user_input):
     try:
-      choice = int(input('>>> '))
-    except:
+      user_input = int(user_input)
+    except ValueError:
       print('Please use a numeric value')
-      self.safely_get_input()
-    return choice
-  
+      self.get_input_from_menu()
+    return user_input - 1
+
+  def is_choice_out_of_bounds(self, choice):
+    return choice < 0 or choice >= len(self.menu.choices)
+
+  def display_prompt(self):
+    print(self.prompt)
+    print('-' * 20)
+    print(self.menu)
+
+  def check_for_exit_command(self, user_input):
+    if user_input.lower() == 'q':
+      sys.exit(0)
