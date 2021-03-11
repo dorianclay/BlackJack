@@ -5,3 +5,6 @@ class Player(object):
     self.id = uuid.uuid4()
     self.name = name
     self.cards = []
+
+  def __eq__(self, other):
+    return self.id == other.id
