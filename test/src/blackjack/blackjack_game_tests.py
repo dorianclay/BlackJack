@@ -75,6 +75,52 @@ class PointEvaluatorTestCase(unittest.TestCase):
     game.end_current_players_turn()
     self.assertTrue(game.is_game_over())
 
+  def test_get_max_winning_score(self):
+    cards = [Card(10, Suit.SPADES)] * 2
+    cards += [Card(5, Suit.SPADES)] * 2
+    game = create_game_with_cards(cards)
+    second_player_name = 'second player'
+    second_player = Player(second_player_name)
+    game.players.append(second_player)
+    game.hit_player()
+    game.hit_player()
+    game.end_current_players_turn()
+    game.hit_player()
+    game.hit_player()
+    self.assertEqual(20, game.get_winning_score())
+
+  def test_get_max_winning_score_is_zero_for_tie(self):
+    cards = [Card(10, Suit.SPADES)] * 6
+    game = create_game_with_cards(cards)
+    second_player_name = 'second player'
+    second_player = Player(second_player_name)
+    game.players.append(second_player)
+    game.hit_player()
+    game.hit_player()
+    game.hit_player()
+    # Now it's second player's turn because player 1 busted.
+    game.hit_player()
+    game.hit_player()
+    game.hit_player()
+    self.assertEqual(0, game.get_winning_score())
+
+  def test_get_winning_players(self):
+    # Cards are drawn in FILO order, so the result of the following insertion
+    # will be the draw of [5, 5, 10, 10].
+    cards = [Card(10, Suit.SPADES)] * 2
+    cards += [Card(5, Suit.SPADES)] * 2
+    game = create_game_with_cards(cards)
+    second_player_name = 'second player'
+    second_player = Player(second_player_name)
+    game.players.append(second_player)
+    game.hit_player()
+    game.hit_player()
+    game.end_current_players_turn()
+    game.hit_player()
+    game.hit_player()
+    winners = game.get_winners()
+    self.assertEqual(1, len(winners))
+    self.assertEqual(second_player, winners[0])
 
 def create_game_with_cards(cards):
   deck = Deck()
