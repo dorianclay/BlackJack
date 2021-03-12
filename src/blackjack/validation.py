@@ -5,14 +5,14 @@ class Validation():
   def __init__(self, game):
     self.game = game
 
-  def is_player_turn(self, player_id):
+  def is_players_turn(self, player_id):
     player = self.get_player(player_id)
     if player is None:
       return False
-    return player == self.game.current_player()
+    return self.game.is_players_turn(player)
 
   def player_can_hit(self, player_id):
-    return (self.is_player_turn(player_id) and
+    return (self.is_players_turn(player_id) and
         self.get_player_points(player_id) < MAX_POINTS)
 
   def get_player(self, player_id):
