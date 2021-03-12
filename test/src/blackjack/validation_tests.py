@@ -20,12 +20,12 @@ class ValidationTestCase(unittest.TestCase):
     self.validation = Validation(game)
 
   def test_is_players_turn(self):
-    is_players_turn = self.validation.is_player_turn(self.test_player.id)
+    is_players_turn = self.validation.is_players_turn(self.test_player.id)
     self.assertTrue(is_players_turn)
 
   def test_is_not_players_turn(self):
     wrong_uuid = UUID('12345678123456781234567812345678')
-    is_players_turn = self.validation.is_player_turn(wrong_uuid)
+    is_players_turn = self.validation.is_players_turn(wrong_uuid)
     self.assertFalse(is_players_turn)
 
   def test_player_can_hit_under_21(self):
