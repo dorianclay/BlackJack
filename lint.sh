@@ -1,4 +1,3 @@
-#!/bin/sh
+#!/bin/bash
 
-sh scripts/install_yapf.sh
-sh scripts/run_yapf.sh
+find . -type f -name "*.py" | xargs yapf --style="google" "${1:--i}"
