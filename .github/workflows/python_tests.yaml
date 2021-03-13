@@ -7,7 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: |
+            python3 -m pip install --upgrade pip
+            python3 -m pip install --user -r requirements.txt
       - name: Lint
-        run: sh lint.sh -d
+        run: |
+            export PATH=$PATH:/home/runner/.local/bin
+            sh lint.sh -d
       - name: Unit Tests
         run: python3 testrunner.py
