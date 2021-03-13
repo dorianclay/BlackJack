@@ -1,5 +1,6 @@
-from flask import Flask
-import json
+import uuid
+
+from flask import Flask, request
 from library.deck import Deck
 from library.game_deck import GameDeck
 from library.player import Player
@@ -17,35 +18,46 @@ game = BlackjackGame(dealer, players)
 validation = Validation(game)
 
 
-@app.route('/blackjack')
-def blackjack():
-    return 'HelloWorld'
+def get_player(player_id):
+    for player in game.players:
+        if player.id == player_id:
+            return player
 
 
-@app.route('/blackjack/api/v1/game')
-def getGame():
-    meta = GameMetadata.from_game(game, players[0])
-    return json.dumps(meta.json_repr())
+@app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>')
+def get_game(game_id, player_id):
+    # TODO: Utilize game_id.
+    player = get_player(uuid.UUID(player_id))
+    if player is None:
+        return '', 502
+    meta = GameMetadata.from_game(game, player)
+    return meta.json_repr()
 
 
-@app.route('/blackjack/api/v1/players/<id>/hit')
-def hit_player(id):
+@app.route('/blackjack/api/v1/players/<player_id>/hit')
+def hit_player(player_id):
     player = players[0]
-    if validation.is_players_turn(player.id) and validation.player_can_hit(
-            player.id):
+    if validation.player_can_hit(player.id):
         game.hit_player()
         return '', 204
     return '', 502
 
 
-@app.route('/blackjack/api/v1/players/<id>/stay')
-def stay_player(id):
-    return ''
+@app.route('/blackjack/api/v1/players/<player_id>/stay')
+def stay_player(player_id):
+    player = players[0]
+    if validation.is_players_turn(player.id):
+        game.end_current_players_turn()
+        return '', 204
+    return '', 502
 
 
-@app.route('/blackjack/api/v1/players')
-def getPlayers():
-    return ''
+@app.route('/blackjack/api/v1/players', methods=['POST'])
+def create_player():
+    name = request.json['name']
+    new_player = Player(name)
+    game.players.append(new_player)
+    return str(new_player.id)
 
 
 app.run()
