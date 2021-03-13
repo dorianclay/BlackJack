@@ -1,0 +1,13 @@
+name: Python Tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint
+        run: sh lint.sh -d
+      - name: Unit Tests
+        run: python3 testrunner.py
