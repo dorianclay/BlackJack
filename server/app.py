@@ -24,7 +24,7 @@ def get_player(player_id):
             return player
 
 
-@app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>')
+@app.route('/blackjack/api/v1/players/<player_id>/games/<game_id>')
 def get_game(game_id, player_id):
     # TODO: Utilize game_id.
     player = get_player(uuid.UUID(player_id))
@@ -36,8 +36,7 @@ def get_game(game_id, player_id):
 
 @app.route('/blackjack/api/v1/players/<player_id>/hit')
 def hit_player(player_id):
-    player = players[0]
-    if validation.player_can_hit(player.id):
+    if validation.player_can_hit(player_id):
         game.hit_player()
         return '', 204
     return '', 502
@@ -45,8 +44,7 @@ def hit_player(player_id):
 
 @app.route('/blackjack/api/v1/players/<player_id>/stay')
 def stay_player(player_id):
-    player = players[0]
-    if validation.is_players_turn(player.id):
+    if validation.is_players_turn(player_id):
         game.end_current_players_turn()
         return '', 204
     return '', 502
@@ -60,4 +58,5 @@ def create_player():
     return str(new_player.id)
 
 
-app.run()
+def run():
+    app.run()
