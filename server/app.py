@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from flask import Flask, request
+from flask_cors import CORS
 from library.deck import Deck
 from library.game_deck import GameDeck
 from library.player import Player
@@ -11,6 +12,7 @@ from src.blackjack.metadata.game_metadata import GameMetadata
 from src.blackjack.validation import Validation
 
 app = Flask(__name__)
+CORS(app)
 
 room = Room()
 
