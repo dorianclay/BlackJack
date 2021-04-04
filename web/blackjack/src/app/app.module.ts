@@ -8,6 +8,7 @@ import { PlayerComponent } from './player/player.component';
 import { CreateGameComponent } from './game/create-game/create-game.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CreatePlayerComponent } from './game/create-player/create-player.component';
+import { GameComponent } from './game/game/game.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { CreatePlayerComponent } from './game/create-player/create-player.compon
     PlayerComponent,
     CreateGameComponent,
     CreatePlayerComponent,
+    GameComponent,
   ],
   imports: [
     BrowserModule,
