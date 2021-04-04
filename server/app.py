@@ -29,7 +29,7 @@ def create_game():
     dealer = BlackjackDealer(main_deck)
     game = BlackjackGame(dealer, [])
     room.add_game(game)
-    return str(game.id)
+    return { 'game_id': game.id }
 
 
 @app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>')
@@ -68,7 +68,7 @@ def create_player(game_id):
     name = request.json['name']
     new_player = Player(name)
     game.players.append(new_player)
-    return str(new_player.id)
+    return { 'player_id': new_player.id }
 
 
 def run():
