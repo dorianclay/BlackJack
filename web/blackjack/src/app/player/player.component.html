@@ -1,5 +1,11 @@
-<p>{{ playerModel.metadata.name }} has {{ playerModel.score }} points.</p>
+<ng-container *ngIf="playerModel">
+    <p>{{ playerModel.metadata.name }}</p>
+    <p *ngIf="playerModel.score"> Score: {{ playerModel.score }} points.</p>
 
-<p *ngFor="let card of playerModel.cards"> {{ textForCard(card) }} </p>
+    <p *ngFor="let card of playerModel.cards"> {{ textForCard(card) }} </p>
 
-<button (click)="onHit()">Hit</button>
+    <ng-container *ngIf="playerModel.metadata.id && playerModel.isTheirTurn">
+        <button (click)="onHit()">Hit</button>
+        <button (click)="onStay()">Stay</button>
+    </ng-container>
+</ng-container>

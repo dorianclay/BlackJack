@@ -1,31 +1,36 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PlayerModel } from './player-model';
-import { Card, Suit } from '../card';
-import { textFormatForCard } from '../card-text.utils';
+import { Card } from '../card';
+import { BlackjackService } from 'src/app/service/blackjack.service';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent {
 
-  @Input() playerModel!: PlayerModel;
+  @Input() playerModel?: PlayerModel;
 
-  constructor() {}
-
-  ngOnInit(): void {
-    if (!this.playerModel) {
-      console.error('expected a playerModel to be provided as input.')
-    }
-  }
+  constructor(private blackjackService: BlackjackService) {}
 
   textForCard(card: Card): string {
-    return textFormatForCard(card);
+    return `${card.value} of ${card.suit}`;
   }
 
   onHit(): void {
-    const newCard = new Card(Suit.DIAMONDS, 2);
-    this.playerModel.cards.push(newCard);
+    if (!this.playerModel) {
+      console.error('Expected a valid playerModel while trying to hit, something went wrong');
+      return;
+    }
+    this.blackjackService.hit(this.playerModel.metadata.currentGameId, this.playerModel.metadata.id!);
+  }
+
+  onStay(): void {
+    if (!this.playerModel) {
+      console.error('Expected a valid playerModel while trying to stay, something went wrong');
+      return;
+    }
+    this.blackjackService.stay(this.playerModel.metadata.currentGameId, this.playerModel.metadata.id!);
   }
 }

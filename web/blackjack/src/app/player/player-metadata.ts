@@ -1,4 +1,4 @@
 
 export class PlayerMetadata {
-  constructor(public id: string, public name: string) {}
+  constructor(public currentGameId: string, public name: string, public id?: string) {}
 }
