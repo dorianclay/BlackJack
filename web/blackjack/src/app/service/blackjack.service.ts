@@ -56,13 +56,13 @@ export class BlackjackService {
     return this.http.get<GameMetadataResponse>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}`);
   }
 
-  // hit(gameId: string, playerId: string) {
+  hit(gameId: string, playerId: string) {
+    this.http.get<void>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/hit`).subscribe();
+  }
 
-  // }
-
-  // stay(gameId: string, playerId: string) {
-
-  // }
+  stay(gameId: string, playerId: string) {
+    this.http.get<void>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/stay`).subscribe();
+  }
 
   createPlayer(gameId: string, name: string): Observable<CreatePlayerResponse> {
     const playerRequest: CreatePlayerRequest = {
