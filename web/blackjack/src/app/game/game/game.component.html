@@ -1,0 +1,7 @@
+<app-player [playerModel]="you"></app-player>
+<p>Other Players:</p>
+<ul>
+    <li *ngFor="let player of otherPlayers">
+        <app-player [playerModel]="player"></app-player>
+    </li>
+</ul>
