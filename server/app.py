@@ -29,7 +29,13 @@ def create_game():
     dealer = BlackjackDealer(main_deck)
     game = BlackjackGame(dealer, [])
     room.add_game(game)
-    return { 'game_id': game.id }
+    return {'game_id': game.id}
+
+
+@app.route('/blackjack/api/v1/games/<game_id>/start', methods=['POST'])
+def start_game(game_id):
+    room.start_game(UUID(game_id))
+    return '', 204
 
 
 @app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>')
@@ -44,6 +50,8 @@ def get_game(game_id, player_id):
 
 @app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>/hit')
 def hit_player(game_id, player_id):
+    if not room.has_game_started(UUID(game_id)):
+        return '', 502
     game = room.get_game(UUID(game_id))
     validation = Validation(game)
     if validation.player_can_hit(UUID(player_id)):
@@ -54,6 +62,8 @@ def hit_player(game_id, player_id):
 
 @app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>/stay')
 def stay_player(game_id, player_id):
+    if not room.has_game_started(UUID(game_id)):
+        return '', 502
     game = room.get_game(UUID(game_id))
     validation = Validation(game)
     if validation.is_players_turn(UUID(player_id)):
@@ -64,11 +74,13 @@ def stay_player(game_id, player_id):
 
 @app.route('/blackjack/api/v1/games/<game_id>/players', methods=['POST'])
 def create_player(game_id):
+    if room.has_game_started(UUID(game_id)):
+        return '', 502
     game = room.get_game(UUID(game_id))
     name = request.json['name']
     new_player = Player(name)
     game.players.append(new_player)
-    return { 'player_id': new_player.id }
+    return {'player_id': new_player.id}
 
 
 def run():

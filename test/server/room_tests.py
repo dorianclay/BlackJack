@@ -47,6 +47,38 @@ class RoomTestCase(unittest.TestCase):
         room.add_game(game)
         self.assertIsNone(room.get_game(id_str))
 
+    def test_has_started_returns_true(self):
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        room.add_game(game)
+        room.start_game(game.id)
+        self.assertTrue(room.has_game_started(game.id))
+
+    def test_has_started_returns_false(self):
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        room.add_game(game)
+        self.assertFalse(room.has_game_started(game.id))
+
+    def test_isolation_of_start_game(self):
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game1 = BlackjackGame(dealer, [])
+        game2 = BlackjackGame(dealer, [])
+        game3 = BlackjackGame(dealer, [])
+        room = Room()
+        room.add_game(game1)
+        room.add_game(game2)
+        room.add_game(game3)
+        room.start_game(game1.id)
+        self.assertTrue(room.has_game_started(game1.id))
+        self.assertFalse(room.has_game_started(game2.id))
+        self.assertFalse(room.has_game_started(game3.id))
+
 
 if __name__ == '__main__':
     unittest.main()
