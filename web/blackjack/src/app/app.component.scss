@@ -1,7 +1,17 @@
 header {
-    padding-bottom: 16px;
+  padding-bottom: 16px;
 }
 
 footer {
-    padding-top: 32px;
+  position: absolute;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  bottom: 25px;
+}
+
+.clickable {
+  cursor: pointer;
 }

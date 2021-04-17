@@ -1,1 +1,69 @@
 /* You can add global styles to this file, and also import other style files */
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  background-color: #323437;
+}
+
+h1 {
+  color: #e2b714;
+  font-family: "Roboto Mono";
+  line-height: 2.3rem;
+  font-size: 2.3rem;
+  text-align: center;
+}
+
+p {
+  color: #d1d0c5;
+  font-family: "Roboto Mono";
+  text-align: center;
+}
+
+.button {
+  background-color: transparent;
+  border: 2px solid #646669;
+  border-radius: 8px;
+  color: #d1d0c5;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 180px;
+  font-size: 16px;
+  font-family: "Roboto Mono";
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #7e2a33;
+  transition: all 0.3s ease;
+}
+
+.button:active {
+  background-color: #461318;
+}
+
+.input {
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #646669;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: #d1d0c5;
+}
+
+.input:focus {
+  outline-color: #d1d0c5;
+}
+
+.error {
+  font-style: regular;
+  color: #ad0831;
+}

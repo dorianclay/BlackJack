@@ -4,8 +4,8 @@
 
     <p *ngFor="let card of playerModel.cards"> {{ textForCard(card) }} </p>
 
-    <ng-container *ngIf="playerModel.metadata.id && playerModel.isTheirTurn">
-        <button (click)="onHit()">Hit</button>
-        <button (click)="onStay()">Stay</button>
-    </ng-container>
+    <div class="button-layout" *ngIf="playerModel.metadata.id && playerModel.isTheirTurn">
+        <button class="button" (click)="onHit()">Hit</button>
+        <button class="button" (click)="onStay()">Stay</button>
+    </div>
 </ng-container>

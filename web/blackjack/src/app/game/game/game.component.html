@@ -1,14 +1,16 @@
-<ng-container *ngIf="results">
-    <h1>Game Over</h1>
-    <p>{{results.winningStatement}}</p>
-    <p>{{results.details}}</p>
-</ng-container>
-<app-player [playerModel]="you"></app-player>
-<p>Other Players:</p>
-<ul>
-    <li *ngFor="let player of otherPlayers">
-        <app-player [playerModel]="player"></app-player>
-    </li>
-</ul>
+<div class="main">
+    <ng-container *ngIf="results">
+        <h1>Game Over</h1>
+        <p>{{results.winningStatement}}</p>
+        <p>{{results.details}}</p>
+    </ng-container>
+    <app-player [playerModel]="you"></app-player>
+    <p>Other Players:</p>
+    <ul>
+        <li *ngFor="let player of otherPlayers">
+            <app-player [playerModel]="player"></app-player>
+        </li>
+    </ul>
 
-<button *ngIf="!hasStarted" (click)="onStartGame()">Start game</button>
+    <button class="button" *ngIf="!hasStarted" (click)="onStartGame()">Start game</button>
+</div>

@@ -1,0 +1,11 @@
+.button-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (max-width: 400px) {
+  .button-layout {
+    flex-direction: column;
+  }
+}
