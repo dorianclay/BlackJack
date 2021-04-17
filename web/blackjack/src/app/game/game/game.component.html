@@ -10,3 +10,5 @@
         <app-player [playerModel]="player"></app-player>
     </li>
 </ul>
+
+<button *ngIf="!hasStarted" (click)="onStartGame()">Start game</button>

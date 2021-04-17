@@ -16,6 +16,8 @@ export class GameComponent implements OnInit {
   private gameId: string = '';
   private playerId: string = '';
 
+  public hasStarted = false;
+
   public you?: PlayerModel;
 
   public otherPlayers: PlayerModel[] = [];
@@ -36,10 +38,15 @@ export class GameComponent implements OnInit {
     });
   }
 
+  onStartGame(): void {
+    this.blackjackService.startGame(this.gameId);
+  }
+
   private fetchGame(): void {
     this.blackjackService.getGame(this.gameId, this.playerId).subscribe((response) => {
       this.you = this.createPlayer(response.you, this.playerId);
       this.otherPlayers = response.players.map((otherPlayerMetadata) => this.createPlayer(otherPlayerMetadata, undefined));
+      this.hasStarted = response.has_started;
       if (response.results) {
         this.results = new ResultsModel(response.results.result, this.createPlayer(response.results.winning_player));
       }

@@ -18,6 +18,7 @@ export interface GameMetadataResponse {
   you: PlayerMetadataResponse;
   players: PlayerMetadataResponse[];
   results?: ResultsMetadataResponse;
+  has_started: boolean;
 }
 
 export interface PlayerMetadataResponse {
@@ -52,15 +53,19 @@ export class BlackjackService {
     return this.http.post<CreateGameResponse>(this.endpoint + '/api/v1/games', {});
   }
 
-  getGame(gameId: string, playerId: string) {
+  getGame(gameId: string, playerId: string): Observable<GameMetadataResponse> {
     return this.http.get<GameMetadataResponse>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}`);
   }
 
-  hit(gameId: string, playerId: string) {
+  startGame(gameId: string): void {
+    this.http.post<void>(`${this.endpoint}/api/v1/games/${gameId}/start`, {}).subscribe();
+  }
+
+  hit(gameId: string, playerId: string): void {
     this.http.get<void>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/hit`).subscribe();
   }
 
-  stay(gameId: string, playerId: string) {
+  stay(gameId: string, playerId: string): void {
     this.http.get<void>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/stay`).subscribe();
   }
 

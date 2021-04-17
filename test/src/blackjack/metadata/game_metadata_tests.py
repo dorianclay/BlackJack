@@ -19,7 +19,7 @@ class GameMetadataTestCase(unittest.TestCase):
         main_player = Player(player_name)
         other_players = [Player(name) for name in ['1', '2', '3']]
         game = create_game([], [main_player] + other_players)
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         you_json = game_json[GameMetadata.Keys.you]
         others_json = game_json[GameMetadata.Keys.players]
@@ -29,7 +29,7 @@ class GameMetadataTestCase(unittest.TestCase):
         self.assertFalse(others_json[1][PlayerMetadata.Keys.their_turn])
         # Player 2's turn.
         game.end_current_players_turn()
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         you_json = game_json[GameMetadata.Keys.you]
         others_json = game_json[GameMetadata.Keys.players]
@@ -38,7 +38,7 @@ class GameMetadataTestCase(unittest.TestCase):
         self.assertFalse(others_json[1][PlayerMetadata.Keys.their_turn])
         # Player 3's turn.
         game.end_current_players_turn()
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         you_json = game_json[GameMetadata.Keys.you]
         others_json = game_json[GameMetadata.Keys.players]
@@ -47,7 +47,7 @@ class GameMetadataTestCase(unittest.TestCase):
         self.assertTrue(others_json[1][PlayerMetadata.Keys.their_turn])
         # No one's turn.
         game.end_current_players_turn()
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         you_json = game_json[GameMetadata.Keys.you]
         others_json = game_json[GameMetadata.Keys.players]
@@ -62,7 +62,7 @@ class GameMetadataTestCase(unittest.TestCase):
         game = create_game(cards, [main_player])
         game.hit_player()
         game.hit_player()
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         you_json = game_json[GameMetadata.Keys.you]
         cards_json = you_json[PlayerMetadata.Keys.cards]
@@ -88,7 +88,7 @@ class GameMetadataTestCase(unittest.TestCase):
         deal_to_player(game, 3)
         deal_to_player(game, 3)
         deal_to_player(game, 3)
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         others_json = game_json[GameMetadata.Keys.players]
         you_json = game_json[GameMetadata.Keys.you]
@@ -130,7 +130,7 @@ class GameMetadataTestCase(unittest.TestCase):
         game.hit_player()
         game.hit_player()
         game.end_current_players_turn()
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         results_json = game_json[GameMetadata.Keys.results]
         you_json = game_json[GameMetadata.Keys.you]
@@ -157,7 +157,7 @@ class GameMetadataTestCase(unittest.TestCase):
         deal_to_player(game, 3)
         deal_to_player(game, 3)
         deal_to_player(game, 3)
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         results_json = game_json[GameMetadata.Keys.results]
         winning_player_json = results_json[ResultsMetadata.Keys.winning_player]
@@ -192,7 +192,7 @@ class GameMetadataTestCase(unittest.TestCase):
         deal_to_player(game, 4)
         deal_to_player(game, 2)
         deal_to_player(game, 1)
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         results_json = game_json[GameMetadata.Keys.results]
         self.assertEqual('Tie', results_json[ResultsMetadata.Keys.result])
@@ -212,10 +212,24 @@ class GameMetadataTestCase(unittest.TestCase):
         deal_to_player(game, 3)
         deal_to_player(game, 3)
         deal_to_player(game, 6)
-        game_metadata = GameMetadata.from_game(game, main_player)
+        game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         results_json = game_json[GameMetadata.Keys.results]
         self.assertEqual('Tie', results_json[ResultsMetadata.Keys.result])
+    
+    def test_game_started(self):
+        main_player = Player('Me')
+        game = create_game([], [main_player])
+        game_metadata = GameMetadata.from_game(game, main_player, True)
+        game_json = game_metadata.json_repr()
+        self.assertTrue(game_json[GameMetadata.Keys.has_started])
+    
+    def test_game_not_started(self):
+        main_player = Player('Me')
+        game = create_game([], [main_player])
+        game_metadata = GameMetadata.from_game(game, main_player, False)
+        game_json = game_metadata.json_repr()
+        self.assertFalse(game_json[GameMetadata.Keys.has_started])
 
     def assert_winner_is_player(self, player, player_json):
         points = evaluate_points(player.cards)

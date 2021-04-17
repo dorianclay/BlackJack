@@ -35,16 +35,19 @@ def create_game():
 @app.route('/blackjack/api/v1/games/<game_id>/start', methods=['POST'])
 def start_game(game_id):
     room.start_game(UUID(game_id))
+    game = room.get_game(UUID(game_id))
+    game.dealer.deal(game.players)
     return '', 204
 
 
 @app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>')
 def get_game(game_id, player_id):
     game = room.get_game(UUID(game_id))
+    has_started = room.has_game_started(UUID(game_id))
     player = get_player(UUID(player_id), game)
     if player is None:
         return '', 502
-    meta = GameMetadata.from_game(game, player)
+    meta = GameMetadata.from_game(game, player, has_started)
     return meta.json_repr()
 
 
