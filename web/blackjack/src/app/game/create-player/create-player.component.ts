@@ -13,6 +13,8 @@ export class CreatePlayerComponent implements OnInit {
 
   public name: string = '';
 
+  public no_name: boolean = false;
+
   constructor(private route: ActivatedRoute, private blackjackService: BlackjackService, private router: Router) { }
 
   ngOnInit(): void {
@@ -22,10 +24,16 @@ export class CreatePlayerComponent implements OnInit {
   }
 
   onCreatePlayer(): void {
-      this.blackjackService.createPlayer(this.gameId, this.name).subscribe((response) => {
+      if (this.name == '') {
+          this.no_name = true;
+      } else {
+          this.blackjackService.createPlayer(this.gameId, this.name).subscribe((response) => {
           console.log(response.player_id);
           this.router.navigate([`/game/${this.gameId}/player/${response.player_id}`]);
       });
+
+      }
+
   }
 
 }
