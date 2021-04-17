@@ -1,3 +1,8 @@
+<ng-container *ngIf="results">
+    <h1>Game Over</h1>
+    <p>{{results.winningStatement}}</p>
+    <p>{{results.details}}</p>
+</ng-container>
 <app-player [playerModel]="you"></app-player>
 <p>Other Players:</p>
 <ul>

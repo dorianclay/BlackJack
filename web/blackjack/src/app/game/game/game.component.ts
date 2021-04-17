@@ -4,6 +4,7 @@ import { interval } from 'rxjs';
 import { Card } from 'src/app/card';
 import { PlayerModel } from 'src/app/player/player-model';
 import { BlackjackService, CardMetadataResponse, PlayerMetadataResponse } from 'src/app/service/blackjack.service';
+import { ResultsModel } from '../results-model';
 
 @Component({
   selector: 'app-game',
@@ -18,6 +19,8 @@ export class GameComponent implements OnInit {
   public you?: PlayerModel;
 
   public otherPlayers: PlayerModel[] = [];
+
+  public results?: ResultsModel;
 
   constructor(private route: ActivatedRoute, private blackjackService: BlackjackService) { }
 
@@ -37,6 +40,9 @@ export class GameComponent implements OnInit {
     this.blackjackService.getGame(this.gameId, this.playerId).subscribe((response) => {
       this.you = this.createPlayer(response.you, this.playerId);
       this.otherPlayers = response.players.map((otherPlayerMetadata) => this.createPlayer(otherPlayerMetadata, undefined));
+      if (response.results) {
+        this.results = new ResultsModel(response.results.result, this.createPlayer(response.results.winning_player));
+      }
     });
   }
 
