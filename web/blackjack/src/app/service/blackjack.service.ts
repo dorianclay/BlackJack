@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface CreateGameResponse {
   game_id: string;
@@ -44,8 +45,8 @@ export interface CardMetadataResponse {
 })
 export class BlackjackService {
 
-  private readonly endpoint = 'http://localhost:5000/blackjack'
-  private readonly options: any = { responseType: 'json' }
+  private readonly endpoint = environment.apiUrl + '/blackjack';
+  private readonly options: any = { responseType: 'json' };
 
   constructor(private http: HttpClient) { }
 
