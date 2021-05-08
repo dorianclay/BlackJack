@@ -168,9 +168,9 @@ class GameMetadataTestCase(unittest.TestCase):
         cards_json = others_json[1][PlayerMetadata.Keys.cards]
         first_card_json, remaining_cards_json = hidden_and_shown(cards_json)
         self.assertEqual(expected_winner.name, other_player_names[1])
-        self.assertIsNone(others_json[1].get(PlayerMetadata.Keys.score))
-        # First card of other player should be hidden.
-        self.assertTrue(first_card_json[CardMetadata.Keys.is_hidden])
+        self.assertEqual(9, others_json[1].get(PlayerMetadata.Keys.score))
+        # First card of other player should not be hidden.
+        self.assertFalse(first_card_json[CardMetadata.Keys.is_hidden])
         self.assertEqual(expected_suits,
                          suits_from_card_json(remaining_cards_json))
         self.assertListEqual(expected_values,
@@ -216,14 +216,14 @@ class GameMetadataTestCase(unittest.TestCase):
         game_json = game_metadata.json_repr()
         results_json = game_json[GameMetadata.Keys.results]
         self.assertEqual('Tie', results_json[ResultsMetadata.Keys.result])
-    
+
     def test_game_started(self):
         main_player = Player('Me')
         game = create_game([], [main_player])
         game_metadata = GameMetadata.from_game(game, main_player, True)
         game_json = game_metadata.json_repr()
         self.assertTrue(game_json[GameMetadata.Keys.has_started])
-    
+
     def test_game_not_started(self):
         main_player = Player('Me')
         game = create_game([], [main_player])
