@@ -1,10 +1,6 @@
-import uuid
-
-
-class Game(object):
+class Game:
 
     def __init__(self, dealer, players):
-        self.id = uuid.uuid4()
         self.dealer = dealer
         self.players = players
 

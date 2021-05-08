@@ -1,3 +1,5 @@
+from library.game_code import gen
+
 class GameContext:
 
     def __init__(self, game):
@@ -11,7 +13,11 @@ class Room:
         self.games = {}
 
     def add_game(self, game):
-        self.games[game.id] = GameContext(game)
+        new_game_id = gen()
+        while new_game_id in self.games:
+            new_game_id = gen()
+        self.games[new_game_id] = GameContext(game)
+        return new_game_id
 
     def get_game(self, game_id):
         game_context = self.games.get(game_id)
