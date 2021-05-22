@@ -1,0 +1,6 @@
+[Unit]
+Description=BlackJack Game
+[Service]
+ExecStart=/bin/bash /usr/sbin/blackjack.sh
+[Install]
+WantedBy=multi-user.target
