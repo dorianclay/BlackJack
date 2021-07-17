@@ -1,9 +1,13 @@
 #!/bin/bash
 
 pushd web/blackjack
-npm ci
-npm run build:prod
+echo ***Setting to CI
+sudo npm ci
+echo ***Running the production build
+sudo npm run build:prod
 
-rm -rf /usr/share/nginx/html/*
-cp dist/blackjack/* /usr/share/nginx/html
+echo ***Removing existing files
+sudo rm -rf /usr/share/nginx/html/*
+echo ***Copying new files
+sudo cp dist/blackjack/* /usr/share/nginx/html
 popd
