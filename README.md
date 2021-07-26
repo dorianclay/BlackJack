@@ -1,15 +1,5 @@
-# BlackJack
+# Card Games: Blackjack and Poker Chips
 A project to practice the SOLID OOP Design Principles.
-
-## Gameplay
-
-1. You are dealt 2 cards.
-2. You have the choice to hit or stay.
-3. If you hit, you are dealt another card.
-4. If your point value is over 21, you bust and lose.
-5. If your point value is 21 or less, repeat step 2.
-6. If you stay, the dealer hits until they are over 16.
-7. Highest point value under 22 wins. Player wins ties.
 
 ## Why Object Oriented Programming
 
@@ -55,9 +45,13 @@ E.g. we have a data access layer, we shouldn't do something or have properties t
 
 ### **I:**
 
+Interfaces should be small and specific, with no unnecessary methods. This allows the client to be free of dependency on unnecessary methods.
+
 ### **D:** Dependency Inversion Principle
 
 Use interfaces if the implementation knows too much about the class it's referring to.
+
+In other words, classes should depend on abstractions, not the specifics. When a specific functionality is needed, use an interface.
 
 ### Refuse Bequest Antipattern
 
@@ -66,6 +60,9 @@ Whenever there are subclasses, must think about whether they'll make use of what
 One way to get around this is to design with **composition over inheritance**. This means rather than inheriting from a class, create a class that is a composition of multiple classes. This prevents getting locked into a heirarchy.
 
 Classic example: if you want to list a bunch of things, and want some properties surrounding it, don't create a subclass of an array. Instead, you create a class that has an array and also the other properties that you want.
+
+
+# Generic 52-Card Game Library
 
 ## Card Class
 
@@ -92,21 +89,11 @@ Classic example: if you want to list a bunch of things, and want some properties
 - Could change if we want more than one deck.
 - Draw cards.
 
-## Blackjack Point Class
-
-- Determines the point value of a given card.
-- e.g. aces worth 1 or 11.
-
 ## Dealer Class
 
 - Abstract/virtual class: intended that a subclass is instatiated.
 - Initially deals cards to all players.
 - Draw a card for a given player.
-
-### BlackJack Dealer Class
-
-- Deals two cards to each player.
-- Draw a card for tne given player.
 
 ## Player Class
 
@@ -119,8 +106,36 @@ Classic example: if you want to list a bunch of things, and want some properties
 - Starts with an array of players and a dealer.
 - Play a turn of the game.
 
-## BlackJack Game Class
+
+# Blackjack
+
+## Gameplay
+
+1. You are dealt 2 cards.
+2. You have the choice to hit or stay.
+3. If you hit, you are dealt another card.
+4. If your point value is over 21, you bust and lose.
+5. If your point value is 21 or less, repeat step 2.
+6. If you stay, the dealer hits until they are over 16.
+7. Highest point value under 22 wins. Player wins ties.
+
+## Blackjack Point Class
+
+- Determines the point value of a given card.
+- e.g. aces worth 1 or 11.
+
+### Blackjack Dealer Class
+
+- Deals two cards to each player.
+- Draw a card for tne given player.
+
+## Blackjack Game Class
 
 - Starts with an array of players and a dealer.
 - When playing a turn:
   - Force them to take another card!
+
+
+# Poker Chips
+
+This game will be added soon!
