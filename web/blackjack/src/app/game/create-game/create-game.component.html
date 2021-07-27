@@ -1,7 +1,8 @@
 <div class="main">
-    <p>Welcome to Blackjack!</p>
+    <h2>Welcome to Blackjack!</h2>
     <button class="button" (click)="onCreateGame()">Create Game</button>
-    <!-- <p>or</p>
+    <p>or join existing</p>
+    <p class="error" *ngIf="no_code">Please enter a game code.</p>
+    <input class="input" type="text" [(ngModel)]="code"/>
     <button class="button" (click)="onJoinGame()">Join Game</button>
-    <input class="text-field" type="text" /> -->
 </div>

@@ -7,7 +7,12 @@ import { BlackjackService } from "../../service/blackjack.service";
   templateUrl: './create-game.component.html',
   styleUrls: ['./create-game.component.scss']
 })
+
 export class CreateGameComponent implements OnInit {
+
+  public code: string = '';
+
+  public no_code: boolean = false;
 
   constructor(private blackjackService: BlackjackService, private router: Router) { }
 
@@ -16,12 +21,18 @@ export class CreateGameComponent implements OnInit {
 
   onCreateGame(): void {
     this.blackjackService.createGame().subscribe((response) => {
-        this.router.navigate([`/game/${response.game_id}`]);
+      this.router.navigate([`/game/${response.game_id}`]);
     });
-}
+  }
 
   onJoinGame(): void {
-    console.warn('Join game is not implemented yet.');
+    if (this.code == '') {
+      this.no_code = true;
+    } else if (/* code is not in list */) {
+      this.no_code = true;
+    } else {
+      this.router.navigate([`/game/${this.code}`]);
+    }
   }
 
 }
