@@ -7,6 +7,9 @@ export interface CreateGameResponse {
   game_id: string;
 }
 
+export interface JoinGameResponse {
+}
+
 export interface CreatePlayerRequest {
   name: string;
 }
@@ -52,6 +55,10 @@ export class BlackjackService {
 
   createGame(): Observable<CreateGameResponse> {
     return this.http.post<CreateGameResponse>(this.endpoint + '/api/v1/games', {});
+  }
+
+  joinGame(gameId: string): Observable<JoinGameResponse> {
+    return this.http.post<JoinGameResponse>(`${this.endpoint}/api/v1/games/${gameId}`, {});
   }
 
   getGame(gameId: string, playerId: string): Observable<GameMetadataResponse> {
