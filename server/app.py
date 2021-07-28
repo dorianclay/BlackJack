@@ -33,6 +33,14 @@ def create_game():
     return {'game_id': game_id}
 
 
+@app.route('/blackjack/api/v1/games/<game_id>', methods=['POST'])
+def join_game(game_id):
+    game = room.get_game(game_id)
+    if game is None:
+        return '', 502
+    return '', 204
+
+
 @app.route('/blackjack/api/v1/games/<game_id>/start', methods=['POST'])
 def start_game(game_id):
     room.start_game(game_id)
