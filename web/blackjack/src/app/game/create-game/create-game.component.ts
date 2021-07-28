@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BlackjackService } from "../../service/blackjack.service";
+import { Observable } from 'rxjs';
+import { BlackjackService, JoinGameResponse } from "../../service/blackjack.service";
 
 @Component({
   selector: 'app-create-game',
@@ -26,7 +27,9 @@ export class CreateGameComponent implements OnInit {
   }
 
   onJoinGame(): void {
-    if (this.gameId == '') {
+    response = this.blackjackService.joinGame(this.gameId).subscribe()
+
+    if (this.gameId == '' || response.status == 502) {
       this.no_gameId = true;
     } else {
       this.router.navigate([`/game/${this.gameId}`]);
