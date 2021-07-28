@@ -10,9 +10,9 @@ import { BlackjackService } from "../../service/blackjack.service";
 
 export class CreateGameComponent implements OnInit {
 
-  public code: string = '';
+  public gameId: string = '';
 
-  public no_code: boolean = false;
+  public no_gameId: boolean = false;
 
   constructor(private blackjackService: BlackjackService, private router: Router) { }
 
@@ -26,12 +26,10 @@ export class CreateGameComponent implements OnInit {
   }
 
   onJoinGame(): void {
-    if (this.code == '') {
-      this.no_code = true;
-    } else if (/* code is not in list */) {
-      this.no_code = true;
+    if (this.gameId == '') {
+      this.no_gameId = true;
     } else {
-      this.router.navigate([`/game/${this.code}`]);
+      this.router.navigate([`/game/${this.gameId}`]);
     }
   }
 

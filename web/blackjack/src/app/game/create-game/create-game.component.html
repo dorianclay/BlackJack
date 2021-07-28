@@ -2,7 +2,7 @@
     <h2>Welcome to Blackjack!</h2>
     <button class="button" (click)="onCreateGame()">Create Game</button>
     <p>or join existing</p>
-    <p class="error" *ngIf="no_code">Please enter a game code.</p>
-    <input class="input" type="text" [(ngModel)]="code"/>
+    <p class="error" *ngIf="no_gameId">Please enter a game code.</p>
+    <input class="input" type="text" [(ngModel)]="gameId"/>
     <button class="button" (click)="onJoinGame()">Join Game</button>
 </div>
