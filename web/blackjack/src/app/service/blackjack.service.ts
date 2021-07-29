@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+// import { NetworkInterfaceBase } from 'node:os';
+// import * as internal from 'node:stream';
 
 export interface CreateGameResponse {
   game_id: string;
 }
 
 export interface JoinGameResponse {
+  game_exists: boolean;
 }
 
 export interface CreatePlayerRequest {
