@@ -31,7 +31,7 @@ export class CreateGameComponent implements OnInit {
       this.no_gameId = true;
     } else {
       this.blackjackService.joinGame(this.gameId).subscribe((response) => {
-        if (response.game_exists == false) {
+        if (response.game_exists === false) {
           this.no_gameId = true;
         } else {
           this.router.navigate([`/game/${this.gameId}`]);
