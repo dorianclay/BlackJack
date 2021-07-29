@@ -1,5 +1,6 @@
 from library.game_code import gen
 
+
 class GameContext:
 
     def __init__(self, game):
