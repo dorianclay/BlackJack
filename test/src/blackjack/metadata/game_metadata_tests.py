@@ -98,6 +98,7 @@ class GameMetadataTestCase(unittest.TestCase):
         self.assertListEqual(['Spades'] * 3, suits_from_card_json(cards_json))
         self.assertListEqual(['Ace'] * 3, values_from_card_json(cards_json))
         # Test other players.
+        expected_scores = [6, 9]
         for player_index in range(0, 2):
             expected_player = game.players[player_index + 1]
             # We remove the first value of each of these lists, since the first card
@@ -105,13 +106,12 @@ class GameMetadataTestCase(unittest.TestCase):
             expected_suits = players_expected_suits(expected_player)
             expected_values = players_expected_values(expected_player)
             cards_json = others_json[player_index][PlayerMetadata.Keys.cards]
-            first_card_json, remaining_cards_json = hidden_and_shown(cards_json)
+            _, remaining_cards_json = hidden_and_shown(cards_json)
             self.assertEqual(expected_player.name,
                              other_player_names[player_index])
-            self.assertIsNone(others_json[player_index].get(
-                PlayerMetadata.Keys.score))
-            # First card of other player should be hidden.
-            self.assertTrue(first_card_json[CardMetadata.Keys.is_hidden])
+            self.assertEqual(
+                expected_scores[player_index],
+                others_json[player_index].get(PlayerMetadata.Keys.score))
             self.assertEqual(expected_suits,
                              suits_from_card_json(remaining_cards_json))
             self.assertListEqual(expected_values,
