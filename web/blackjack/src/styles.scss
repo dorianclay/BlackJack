@@ -51,6 +51,12 @@ p {
   text-align: center;
 }
 
+a {
+  @extend p;
+  font-weight: bold;
+  text-decoration: inherit;
+}
+
 .button {
   background-color: transparent;
   border: 2px solid var(--sub-color);
@@ -94,5 +100,5 @@ p {
 
 .error {
   font-style: regular;
-  color: #ad0831;
+  color: var(--error-color);
 }
