@@ -87,3 +87,10 @@ class Room:
             return
         game_context.game.players = game_context.lobby.get_ready_players('')
         game_context.has_started = True
+
+    def close_game(self, game_id):
+        game_context = self.games.get(game_id)
+        if not game_context:
+            return 0
+        self.games.pop(game_id)
+        return 1
