@@ -44,18 +44,26 @@ export interface CardMetadataResponse {
   is_hidden: boolean;
 }
 
+export interface LobbyListResponse {
+  can_start: boolean;
+  is_ready: boolean;
+  lobby_list: string[];
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BlackjackService {
-
   private readonly endpoint = environment.apiUrl + '/blackjack';
   private readonly options: any = { responseType: 'json' };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   createGame(): Observable<CreateGameResponse> {
-    return this.http.post<CreateGameResponse>(this.endpoint + '/api/v1/games', {});
+    return this.http.post<CreateGameResponse>(
+      this.endpoint + '/api/v1/games',
+      {}
+    );
   }
 
   joinGame(gameId: string): Observable<JoinGameResponse> {
@@ -63,26 +71,55 @@ export class BlackjackService {
   }
 
   getGame(gameId: string, playerId: string): Observable<GameMetadataResponse> {
-    return this.http.get<GameMetadataResponse>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}`);
+    return this.http.get<GameMetadataResponse>(
+      `${this.endpoint}/api/v1/games/${gameId}/players/${playerId}`
+    );
+  }
+
+  readyPlayer(gameId: string, playerId: string): void {
+    this.http
+      .post<void>(
+        `${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/ready`,
+        {}
+      )
+      .subscribe();
+  }
+
+  getPlayersInLobby(gameId: string, playerId: string): Observable<LobbyListResponse> {
+    return this.http.get<LobbyListResponse>(
+      `${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/lobby`
+    );
   }
 
   startGame(gameId: string): void {
-    this.http.post<void>(`${this.endpoint}/api/v1/games/${gameId}/start`, {}).subscribe();
+    this.http
+      .post<void>(`${this.endpoint}/api/v1/games/${gameId}/start`, {})
+      .subscribe();
   }
 
   hit(gameId: string, playerId: string): void {
-    this.http.get<void>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/hit`).subscribe();
+    this.http
+      .get<void>(
+        `${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/hit`
+      )
+      .subscribe();
   }
 
   stay(gameId: string, playerId: string): void {
-    this.http.get<void>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/stay`).subscribe();
+    this.http
+      .get<void>(
+        `${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/stay`
+      )
+      .subscribe();
   }
 
   createPlayer(gameId: string, name: string): Observable<CreatePlayerResponse> {
     const playerRequest: CreatePlayerRequest = {
-      name
-    }
-    return this.http.post<CreatePlayerResponse>(`${this.endpoint}/api/v1/games/${gameId}/players`, playerRequest);
+      name,
+    };
+    return this.http.post<CreatePlayerResponse>(
+      `${this.endpoint}/api/v1/games/${gameId}/players`,
+      playerRequest
+    );
   }
-
 }

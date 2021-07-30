@@ -3,31 +3,40 @@ import { ActivatedRoute } from '@angular/router';
 import { interval } from 'rxjs';
 import { Card } from 'src/app/card';
 import { PlayerModel } from 'src/app/player/player-model';
-import { BlackjackService, CardMetadataResponse, PlayerMetadataResponse } from 'src/app/service/blackjack.service';
+import {
+  BlackjackService,
+  PlayerMetadataResponse,
+} from 'src/app/service/blackjack.service';
 import { ResultsModel } from '../results-model';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit {
-
   private gameId: string = '';
   private playerId: string = '';
 
+  public canStart = false;
   public hasStarted = false;
 
   public you?: PlayerModel;
 
   public otherPlayers: PlayerModel[] = [];
+  public playersInLobby: string[] = [];
 
   public results?: ResultsModel;
 
-  constructor(private route: ActivatedRoute, private blackjackService: BlackjackService) { }
+  public isReady = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private blackjackService: BlackjackService
+  ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.gameId = params['game_id'];
       this.playerId = params['player_id'];
       this.fetchGame();
@@ -38,18 +47,29 @@ export class GameComponent implements OnInit {
     });
   }
 
+  onReady(): void {
+    this.blackjackService.readyPlayer(this.gameId, this.playerId);
+  }
+
   onStartGame(): void {
     this.blackjackService.startGame(this.gameId);
   }
 
   private fetchGame(): void {
-    this.blackjackService.getGame(this.gameId, this.playerId).subscribe((response) => {
-      this.you = this.createPlayer(response.you, this.playerId);
-      this.otherPlayers = response.players.map((otherPlayerMetadata) => this.createPlayer(otherPlayerMetadata, undefined));
-      this.hasStarted = response.has_started;
-      if (response.results) {
-        this.results = new ResultsModel(response.results.result, this.createPlayer(response.results.winning_player));
-      }
+    if (this.isReady) {
+      this.blackjackService.getGame(this.gameId, this.playerId).subscribe((response) => {
+        this.you = this.createPlayer(response.you, this.playerId);
+        this.otherPlayers = response.players.map((otherPlayerMetadata) => this.createPlayer(otherPlayerMetadata, undefined));
+        this.hasStarted = response.has_started;
+        if (response.results) {
+          this.results = new ResultsModel(response.results.result, this.createPlayer(response.results.winning_player));
+        }
+      });
+    }
+    this.blackjackService.getPlayersInLobby(this.gameId, this.playerId).subscribe((lobbyList) => {
+      this.canStart = lobbyList.can_start;
+      this.isReady = lobbyList.is_ready;
+      this.playersInLobby = lobbyList.lobby_list;
     });
   }
 

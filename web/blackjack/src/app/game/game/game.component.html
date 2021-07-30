@@ -1,16 +1,35 @@
 <div class="main">
-    <ng-container *ngIf="results">
-        <h1>Game Over</h1>
-        <p>{{results.winningStatement}}</p>
-        <p>{{results.details}}</p>
-    </ng-container>
-    <app-player [playerModel]="you"></app-player>
-    <p>Other Players:</p>
-    <ul>
-        <li *ngFor="let player of otherPlayers">
-            <app-player [playerModel]="player"></app-player>
-        </li>
-    </ul>
+  <ng-container *ngIf="results">
+    <h1>Game Over</h1>
+    <p>{{ results.winningStatement }}</p>
+    <p>{{ results.details }}</p>
+  </ng-container>
 
-    <button class="button" *ngIf="!hasStarted" (click)="onStartGame()">Start game</button>
+  <div *ngIf="isReady">
+    <app-player *ngIf="hasStarted" [playerModel]="you"></app-player>
+  </div>
+
+  <ul *ngIf="hasStarted; else lobbyPlayersGetReady">
+    <p>Other Players:</p>
+    <li *ngFor="let player of otherPlayers">
+      <app-player [playerModel]="player"></app-player>
+    </li>
+  </ul>
+  <ng-template #lobbyPlayersGetReady>
+    <p>Lobby:</p>
+    <p *ngIf="playersInLobby.length === 0">No one is here yet</p>
+    <ul>
+      <li *ngFor="let playerInLobby of playersInLobby">
+        <p>
+            {{ playerInLobby }}
+        </p>
+      </li>
+    </ul>
+  </ng-template>
+
+  <button class="button" *ngIf="!isReady" (click)="onReady()">Ready</button>
+
+  <button class="button" *ngIf="!hasStarted && canStart" (click)="onStartGame()">
+    Start game
+  </button>
 </div>
