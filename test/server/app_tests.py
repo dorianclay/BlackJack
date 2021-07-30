@@ -16,10 +16,41 @@ class AppTestCase(unittest.TestCase):
             game = room.get_game(game_id)
             self.assertIsNotNone(game)
 
+    def test_start_game_errors_when_not_everyone_is_ready(self):
+        with app.test_client() as c:
+            response = c.post('/blackjack/api/v1/games')
+            game_id = response.json['game_id']
+            response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
+                              json={'name': 'Ben Rooke'})
+            response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
+                              json={'name': 'Dorian Clay'})
+            player_id = UUID(response.json['player_id'])
+            room.set_player_ready(game_id, player_id)
+            response = c.post(f'blackjack/api/v1/games/{game_id}/start')
+            self.assertTrue(response.status.startswith('409'))
+
+    def test_start_game_when_everyone_is_ready(self):
+        with app.test_client() as c:
+            response = c.post('/blackjack/api/v1/games')
+            game_id = response.json['game_id']
+            response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
+                              json={'name': 'Ben Rooke'})
+            player_id = UUID(response.json['player_id'])
+            room.set_player_ready(game_id, player_id)
+            response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
+                              json={'name': 'Dorian Clay'})
+            player_id = UUID(response.json['player_id'])
+            room.set_player_ready(game_id, player_id)
+            response = c.post(f'blackjack/api/v1/games/{game_id}/start')
+            self.assertTrue(room.has_game_started(game_id))
+
     def test_start_game_prevents_new_players(self):
         with app.test_client() as c:
             response = c.post('/blackjack/api/v1/games')
             game_id = response.json['game_id']
+            game = room.get_game(game_id)
+            for player in game.players:
+                room.set_player_ready(game_id, player.id)
             c.post(f'blackjack/api/v1/games/{game_id}/start')
             # Now that the game has started, we should fail to create a player.
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
@@ -70,8 +101,10 @@ class AppTestCase(unittest.TestCase):
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
                               json={'name': 'Ben Rooke'})
             player_id = UUID(response.json['player_id'])
-            c.post(f'blackjack/api/v1/games/{game_id}/start')
             game = room.get_game(game_id)
+            for player in game.players:
+                room.set_player_ready(game_id, player.id)
+            c.post(f'blackjack/api/v1/games/{game_id}/start')
             player = game.players[0]
             self.assertEqual(2, len(player.cards))
             response = c.get(
@@ -84,10 +117,12 @@ class AppTestCase(unittest.TestCase):
             game_id = response.json['game_id']
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
                               json={'name': 'Ben Rooke'})
-            first_player_id = UUID(response.json['player_id'])
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
                               json={'name': 'Dorian Clay'})
             second_player_id = UUID(response.json['player_id'])
+            game = room.get_game(game_id)
+            for player in game.players:
+                room.set_player_ready(game_id, player.id)
             c.post(f'blackjack/api/v1/games/{game_id}/start')
             response = c.get(
                 f'/blackjack/api/v1/games/{game_id}/players/{second_player_id}/hit'
@@ -102,9 +137,11 @@ class AppTestCase(unittest.TestCase):
                               json={'name': 'Ben Rooke'})
             c.post(f'/blackjack/api/v1/games/{game_id}/players',
                    json={'name': 'Dorian Clay'})
+            game = room.get_game(game_id)
+            for player in game.players:
+                room.set_player_ready(game_id, player.id)
             c.post(f'blackjack/api/v1/games/{game_id}/start')
             player_id = UUID(response.json['player_id'])
-            game = room.get_game(game_id)
             player = game.players[0]
             self.assertEqual(2, len(player.cards))
             response = c.get(
@@ -120,9 +157,11 @@ class AppTestCase(unittest.TestCase):
                               json={'name': 'Ben Rooke'})
             c.post(f'/blackjack/api/v1/games/{game_id}/players',
                    json={'name': 'Dorian Clay'})
+            game = room.get_game(game_id)
+            for player in game.players:
+                room.set_player_ready(game_id, player.id)
             c.post(f'blackjack/api/v1/games/{game_id}/start')
             player_id = UUID(response.json['player_id'])
-            game = room.get_game(game_id)
             player = game.players[0]
             self.assertEqual(2, len(player.cards))
             response = c.get(

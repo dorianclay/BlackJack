@@ -44,6 +44,8 @@ def join_game(game_id):
 
 @app.route('/blackjack/api/v1/games/<game_id>/start', methods=['POST'])
 def start_game(game_id):
+    if not room.is_everyone_ready(game_id):
+        return '', 409
     room.start_game(game_id)
     game = room.get_game(game_id)
     game.dealer.deal(game.players)
