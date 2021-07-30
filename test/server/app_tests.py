@@ -88,9 +88,9 @@ class AppTestCase(unittest.TestCase):
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
                               json={'name': 'Ben Rooke'})
             player_id = UUID(response.json['player_id'])
-            game = room.get_game(game_id)
-            player = game.players[0]
-            self.assertEquals(1, len(game.players))
+            lobby = room.get_lobby(game_id)
+            player = lobby.players[0]
+            self.assertEquals(1, len(lobby.players))
             self.assertEquals('Ben Rooke', player.name)
             self.assertEquals(player_id, player.id)
 
@@ -101,11 +101,9 @@ class AppTestCase(unittest.TestCase):
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
                               json={'name': 'Ben Rooke'})
             player_id = UUID(response.json['player_id'])
-            game = room.get_game(game_id)
-            for player in game.players:
-                room.set_player_ready(game_id, player.id)
+            room.set_player_ready(game_id, player_id)
             c.post(f'blackjack/api/v1/games/{game_id}/start')
-            player = game.players[0]
+            player = room.get_lobby(game_id).players[0]
             self.assertEqual(2, len(player.cards))
             response = c.get(
                 f'/blackjack/api/v1/games/{game_id}/players/{player_id}/hit')
@@ -135,19 +133,20 @@ class AppTestCase(unittest.TestCase):
             game_id = response.json['game_id']
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
                               json={'name': 'Ben Rooke'})
-            c.post(f'/blackjack/api/v1/games/{game_id}/players',
-                   json={'name': 'Dorian Clay'})
-            game = room.get_game(game_id)
-            for player in game.players:
-                room.set_player_ready(game_id, player.id)
+            first_player_id = UUID(response.json['player_id'])
+            response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
+                              json={'name': 'Dorian Clay'})
+            second_player_id = UUID(response.json['player_id'])
+            room.set_player_ready(game_id, first_player_id)
+            room.set_player_ready(game_id, second_player_id)
             c.post(f'blackjack/api/v1/games/{game_id}/start')
-            player_id = UUID(response.json['player_id'])
-            player = game.players[0]
+            player = room.get_game(game_id).players[0]
             self.assertEqual(2, len(player.cards))
             response = c.get(
-                f'/blackjack/api/v1/games/{game_id}/players/{player_id}/stay')
+                f'/blackjack/api/v1/games/{game_id}/players/{first_player_id}/stay'
+            )
             self.assertEqual(2, len(player.cards))
-            self.assertNotEqual(player, game.current_player())
+            self.assertNotEqual(player, room.get_game(game_id).current_player())
 
     def test_player_stay_but_not_their_turn(self):
         with app.test_client() as c:
@@ -155,21 +154,23 @@ class AppTestCase(unittest.TestCase):
             game_id = response.json['game_id']
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
                               json={'name': 'Ben Rooke'})
-            c.post(f'/blackjack/api/v1/games/{game_id}/players',
-                   json={'name': 'Dorian Clay'})
-            game = room.get_game(game_id)
-            for player in game.players:
-                room.set_player_ready(game_id, player.id)
+            first_player_id = UUID(response.json['player_id'])
+            response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
+                              json={'name': 'Dorian Clay'})
+            second_player_id = UUID(response.json['player_id'])
+            room.set_player_ready(game_id, first_player_id)
+            room.set_player_ready(game_id, second_player_id)
             c.post(f'blackjack/api/v1/games/{game_id}/start')
-            player_id = UUID(response.json['player_id'])
-            player = game.players[0]
+            player = room.get_game(game_id).players[0]
             self.assertEqual(2, len(player.cards))
             response = c.get(
-                f'/blackjack/api/v1/games/{game_id}/players/{player_id}/stay')
+                f'/blackjack/api/v1/games/{game_id}/players/{first_player_id}/stay'
+            )
             self.assertEqual(2, len(player.cards))
-            self.assertNotEqual(player, game.current_player())
+            self.assertNotEqual(player, room.get_game(game_id).current_player())
             response = c.get(
-                f'/blackjack/api/v1/games/{game_id}/players/{player_id}/stay')
+                f'/blackjack/api/v1/games/{game_id}/players/{first_player_id}/stay'
+            )
             self.assertTrue(response.status.startswith('502'))
 
     def test_get_game_state(self):
@@ -182,6 +183,8 @@ class AppTestCase(unittest.TestCase):
             response = c.post(f'/blackjack/api/v1/games/{game_id}/players',
                               json={'name': 'Dorian Clay'})
             second_player_id = UUID(response.json['player_id'])
+            room.set_player_ready(game_id, first_player_id)
+            room.set_player_ready(game_id, second_player_id)
             c.post(f'blackjack/api/v1/games/{game_id}/start')
             response = c.get(
                 f'/blackjack/api/v1/games/{game_id}/players/{first_player_id}')

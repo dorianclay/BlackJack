@@ -4,7 +4,6 @@ from flask import Flask, request
 from flask_cors import CORS
 from library.deck import Deck
 from library.game_deck import GameDeck
-from library.player import Player
 from server.room import Room
 from src.blackjack.blackjack_dealer import BlackjackDealer
 from src.blackjack.blackjack_game import BlackjackGame
@@ -56,11 +55,32 @@ def start_game(game_id):
 def get_game(game_id, player_id):
     game = room.get_game(game_id)
     has_started = room.has_game_started(game_id)
+    if not has_started:
+        return '', 204
     player = get_player(UUID(player_id), game)
     if player is None:
         return '', 502
     meta = GameMetadata.from_game(game, player, has_started)
     return meta.json_repr()
+
+
+@app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>/lobby')
+def get_lobby(game_id, player_id):
+    lobby_list = room.get_lobby_list(game_id, UUID(player_id))
+    if lobby_list is None:
+        return '', 404
+    return {
+        'lobby_list': lobby_list,
+        'can_start': room.is_everyone_ready(game_id),
+        'is_ready': room.is_player_ready(game_id, UUID(player_id)),
+    }
+
+
+@app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>/ready',
+           methods=['POST'])
+def ready_player(game_id, player_id):
+    room.set_player_ready(game_id, UUID(player_id))
+    return '', 204
 
 
 @app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>/hit')
@@ -91,11 +111,9 @@ def stay_player(game_id, player_id):
 def create_player(game_id):
     if room.has_game_started(game_id):
         return '', 502
-    game = room.get_game(game_id)
     name = request.json['name']
-    new_player = Player(name)
-    game.players.append(new_player)
-    return {'player_id': new_player.id}
+    player_id = room.add_player_to_lobby(game_id, name)
+    return {'player_id': player_id}
 
 
 def run():
