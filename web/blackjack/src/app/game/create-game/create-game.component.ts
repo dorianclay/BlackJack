@@ -15,6 +15,8 @@ export class CreateGameComponent implements OnInit {
 
   public no_gameId: boolean = false;
 
+  public invalid_gameId: boolean = false;
+
   constructor(private blackjackService: BlackjackService, private router: Router) { }
 
   ngOnInit(): void {
@@ -32,7 +34,7 @@ export class CreateGameComponent implements OnInit {
     } else {
       this.blackjackService.joinGame(this.gameId).subscribe((response) => {
         if (response.game_exists === false) {
-          this.no_gameId = true;
+          this.invalid_gameId = true;
         } else {
           this.router.navigate([`/game/${this.gameId}`]);
         }
