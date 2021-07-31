@@ -67,7 +67,7 @@ export class BlackjackService {
   }
 
   joinGame(gameId: string): Observable<JoinGameResponse> {
-    return this.http.post<JoinGameResponse>(`${this.endpoint}/api/v1/games/${gameId}`, {});
+    return this.http.get<JoinGameResponse>(`${this.endpoint}/api/v1/games/${gameId}`, {});
   }
 
   getGame(gameId: string, playerId: string): Observable<GameMetadataResponse> {
