@@ -4,6 +4,39 @@
   align-items: center;
 }
 
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  padding: 16px;
+}
+
+img {
+  height: auto;
+  width: 200px;
+}
+
+@media (max-width: 1200px) {
+  img {
+    width: 140px;
+  }
+}
+
+@media (max-width: 850px) {
+  img {
+    width: 100px;
+  }
+}
+
+@media (max-width: 600px) {
+  img {
+    width: 60px;
+  }
+}
+
 @media (max-width: 400px) {
   .button-layout {
     flex-direction: column;

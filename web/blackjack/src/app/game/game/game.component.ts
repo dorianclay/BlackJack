@@ -44,13 +44,25 @@ export class GameComponent implements OnInit {
 
   private fetchGame(): void {
     this.blackjackService.getGame(this.gameId, this.playerId).subscribe((response) => {
-      this.you = this.createPlayer(response.you, this.playerId);
+      if (this.shouldReloadPlayer(response.you)) {
+        this.you = this.createPlayer(response.you, this.playerId);
+      }
       this.otherPlayers = response.players.map((otherPlayerMetadata) => this.createPlayer(otherPlayerMetadata, undefined));
       this.hasStarted = response.has_started;
       if (response.results) {
         this.results = new ResultsModel(response.results.result, this.createPlayer(response.results.winning_player));
       }
     });
+  }
+
+  private createCards(playerMetadata: PlayerMetadataResponse): Card[] {
+    return playerMetadata.cards.map((cardMetadata) => new Card(cardMetadata.suit ?? '', cardMetadata.value ?? '', cardMetadata.is_hidden))
+  }
+
+  private shouldReloadPlayer(playerMetadata: PlayerMetadataResponse): boolean {
+    const sameCards = JSON.stringify(this.createCards(playerMetadata)) === JSON.stringify(this.you?.cards)
+    const sameTurn = playerMetadata.their_turn === this.you?.isTheirTurn
+    return !sameCards || !sameTurn;
   }
 
   private createPlayer(playerMetadata: PlayerMetadataResponse, id?: string): PlayerModel {
@@ -60,7 +72,7 @@ export class GameComponent implements OnInit {
         name: playerMetadata.name,
         id: id,
       },
-      cards: playerMetadata.cards.filter((cardMetadata) => !cardMetadata.is_hidden).map((cardMetadata) => new Card(cardMetadata.suit!, cardMetadata.value!)),
+      cards: this.createCards(playerMetadata),
       isTheirTurn: playerMetadata.their_turn,
       score: playerMetadata.score,
     };

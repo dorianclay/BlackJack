@@ -2,7 +2,9 @@
     <h3>{{ playerModel.metadata.name }}</h3>
     <p *ngIf="playerModel.score"> Score: {{ playerModel.score }} points.</p>
 
-    <p *ngFor="let card of playerModel.cards"> {{ textForCard(card) }} </p>
+    <span class="cards"> 
+        <img class="card" *ngFor="let card of playerModel.cards" [src]="imageSrcForCard(card)" alt="" />
+    </span>
 
     <div class="button-layout" *ngIf="playerModel.metadata.id && playerModel.isTheirTurn">
         <button class="button" (click)="onHit()">Hit</button>
