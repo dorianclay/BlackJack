@@ -1,5 +1,5 @@
 <ng-container *ngIf="playerModel">
-    <p>{{ playerModel.metadata.name }}</p>
+    <h3>{{ playerModel.metadata.name }}</h3>
     <p *ngIf="playerModel.score"> Score: {{ playerModel.score }} points.</p>
 
     <p *ngFor="let card of playerModel.cards"> {{ textForCard(card) }} </p>
