@@ -16,7 +16,8 @@
     </li>
   </ul>
   <ng-template #lobbyPlayersGetReady>
-    <p>Lobby:</p>
+    <h2>Lobby:</h2>
+    <h1>{{ gameId }}</h1>
     <p *ngIf="playersInLobby.length === 0">No one is here yet</p>
     <ul>
       <li *ngFor="let playerInLobby of playersInLobby">
