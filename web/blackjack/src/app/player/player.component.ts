@@ -14,8 +14,12 @@ export class PlayerComponent {
 
   constructor(private blackjackService: BlackjackService) {}
 
-  textForCard(card: Card): string {
-    return `${card.value} of ${card.suit}`;
+  imageSrcForCard(card: Card): string {
+    if (card.isHidden) {
+      return 'assets/svg-cards/back_of_card.svg';
+    }
+    const path = `assets/svg-cards/${card.value}_of_${card.suit}.svg`;
+    return path.toLocaleLowerCase();
   }
 
   onHit(): void {
