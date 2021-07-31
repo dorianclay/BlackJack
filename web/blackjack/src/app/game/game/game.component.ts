@@ -15,7 +15,7 @@ import { ResultsModel } from '../results-model';
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit {
-  private gameId: string = '';
+  public gameId: string = '';
   private playerId: string = '';
 
   public canStart = false;
