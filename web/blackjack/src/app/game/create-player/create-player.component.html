@@ -3,6 +3,6 @@
     <h1>{{ gameId }}</h1>
     <p class="error" *ngIf="no_name">Please enter a name.</p>
     <p>Enter a name:</p>
-    <input class="input" type="text" [(ngModel)]="name"/>
+    <input class="input" type="text" [(ngModel)]="name" (keyup.enter)="onCreatePlayer()"/>
     <button class="button" (click)="onCreatePlayer()">Done</button>
 </div>
