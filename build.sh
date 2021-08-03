@@ -9,5 +9,5 @@ sudo npm run build:prod
 echo ***Removing existing files
 sudo rm -rf /usr/share/nginx/html/*
 echo ***Copying new files
-sudo cp dist/blackjack/* /usr/share/nginx/html
+sudo cp -r dist/blackjack/* /usr/share/nginx/html
 popd
