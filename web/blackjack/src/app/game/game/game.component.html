@@ -10,11 +10,12 @@
   </div>
 
   <ul *ngIf="hasStarted; else lobbyPlayersGetReady">
-    <p>Other Players:</p>
+    <h2>Other Players:</h2>
     <li *ngFor="let player of otherPlayers">
       <app-player [playerModel]="player"></app-player>
     </li>
   </ul>
+
   <ng-template #lobbyPlayersGetReady>
     <h2>Lobby:</h2>
     <h1>{{ gameId }}</h1>
