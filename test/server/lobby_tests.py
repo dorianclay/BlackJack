@@ -6,6 +6,21 @@ from server.lobby import Lobby
 
 class LobbyTestCase(unittest.TestCase):
 
+    def test_player_exists_true(self):
+        lobby = Lobby()
+        expected_player = Player('Bob')
+        lobby.players.append(expected_player)
+        lobby.players.append(Player('Alice'))
+        lobby.players.append(Player('Thor'))
+        self.assertTrue(lobby.player_exists(expected_player.id))
+
+    def test_player_exists_false(self):
+        lobby = Lobby()
+        unexpected_player = Player('Bob')
+        lobby.player.append(Player('Alice'))
+        lobby.player.append(Player('Thor'))
+        self.assertFalse(lobby.player_exists(unexpected_player.id))
+    
     def test_get_ready_players(self):
         lobby = Lobby()
         expected_ready_player = Player('ready')
