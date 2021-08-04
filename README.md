@@ -1,5 +1,5 @@
 # BlackJack
-An awesome project to practice the SOLID OOP Design Principles.
+A project to practice the SOLID OOP Design Principles.
 
 ## Gameplay
 
