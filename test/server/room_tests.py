@@ -10,7 +10,7 @@ from src.blackjack.blackjack_game import BlackjackGame
 
 class RoomTestCase(unittest.TestCase):
 
-    def test_get_room(self):
+    def test_get_game(self):
         deck = GameDeck([Deck()])
         dealer = BlackjackDealer(deck)
         game = BlackjackGame(dealer, [])
@@ -18,7 +18,7 @@ class RoomTestCase(unittest.TestCase):
         game_id = room.add_game(game)
         self.assertTrue(game, room.get_game(str(game_id)))
 
-    def test_get_room_with_multiple_rooms(self):
+    def test_get_game_with_multiple_games(self):
         deck1 = GameDeck([Deck()])
         deck2 = GameDeck([Deck(), Deck(), Deck()])
         dealer1 = BlackjackDealer(deck1)
@@ -31,12 +31,12 @@ class RoomTestCase(unittest.TestCase):
         self.assertTrue(game1, room.get_game(str(game1_id)))
         self.assertTrue(game2, room.get_game(str(game2_id)))
 
-    def test_get_room_but_no_rooms(self):
+    def test_get_game_but_no_games(self):
         id_str = 'code-code-code'
         room = Room()
         self.assertIsNone(room.get_game(id_str))
 
-    def test_get_room_invalid_id(self):
+    def test_get_game_invalid_id(self):
         id_str = 'code-code-code'
         deck = GameDeck([Deck()])
         dealer = BlackjackDealer(deck)
