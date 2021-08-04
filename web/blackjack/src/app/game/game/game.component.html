@@ -19,6 +19,13 @@
   <ng-template #lobbyPlayersGetReady>
     <h2>Lobby:</h2>
     <h1>{{ gameId }}</h1>
+
+    <button class="button" *ngIf="!isReady" (click)="onReady()">Ready</button>
+
+    <button class="button" *ngIf="!hasStarted && canStart" (click)="onStartGame()">
+      Start game
+    </button>  
+
     <p *ngIf="playersInLobby.length === 0">No one is here yet</p>
     <ul>
       <li *ngFor="let playerInLobby of playersInLobby">
@@ -29,9 +36,4 @@
     </ul>
   </ng-template>
 
-  <button class="button" *ngIf="!isReady" (click)="onReady()">Ready</button>
-
-  <button class="button" *ngIf="!hasStarted && canStart" (click)="onStartGame()">
-    Start game
-  </button>
 </div>
