@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵɵqueryRefresh } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { interval } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import { Card } from 'src/app/card';
 import { PlayerModel } from 'src/app/player/player-model';
 import {
@@ -45,6 +45,10 @@ export class GameComponent implements OnInit {
     interval(500).subscribe(() => {
       this.fetchGame();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.blackjackService.leavePlayer(this.gameId, this.playerId);
   }
 
   onReady(): void {
