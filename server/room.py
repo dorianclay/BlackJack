@@ -40,10 +40,10 @@ class Room:
         if not game_context:
             return None
         new_player = Player(player_name)
-        game_context.lobby.players.append(new_player)
+        game_context.lobby.add_player(new_player)
         return new_player.id
 
-    def remove_player_from_lobby(self, game_id, player):
+    def remove_player_from_lobby(self, game_id, player_id):
         '''
         @param self: the room object.
         @param game_id: the ID of the game to remove the player from.
@@ -52,10 +52,7 @@ class Room:
         game_context = self.games.get(game_id)
         if not game_context:
             return None
-        '''
-        TODO: make sure the player object exists, then remove it from the list.
-        '''
-
+        game_context.lobby.remove_player(player_id)
 
     def has_game_started(self, game_id):
         game_context = self.games.get(game_id)
@@ -81,23 +78,11 @@ class Room:
             return
         game_context.lobby.set_player_ready(player_id)
 
-    def set_player_disconnected(self, game_id, player_id):
-        game_context = self.games.get(game_id)
-        if not game_context:
-            return 
-        game_context.lobby.set_player_disconnected(player_id)
-
     def is_everyone_ready(self, game_id):
         game_context = self.games.get(game_id)
         if not game_context:
             return False
         return game_context.lobby.is_everyone_ready()
-
-    def is_everyone_gone(self, game_id):
-        game_context = self.games.get(game_id)
-        if not game_context:
-            return False
-        return game_context.lobby.is_everyone_gone()
 
     def is_player_ready(self, game_id, player_id):
         game_context = self.games.get(game_id)

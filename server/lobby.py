@@ -4,6 +4,23 @@ class Lobby():
         self.players = []
         self.ready_player_ids = set()
 
+    def add_player(self, player):
+        self.players.append(player)
+
+    def remove_player(self, player_id):
+        index = self.player_exists(player_id)
+        if index < 0:
+            raise ValueError('Player does not exist.')
+        self.players.pop(index)
+
+    def player_exists(self, player_id):
+        index = 0
+        for player in self.players:
+            if player.id == player_id:
+                return index
+            index += 1
+        return -1
+
     def get_ready_players(self, ignore_player_id):
         return [
             player for player in self.players if

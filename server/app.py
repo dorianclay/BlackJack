@@ -51,6 +51,26 @@ def start_game(game_id):
     return '', 204
 
 
+@app.route('/blackjack/api/v1/games/<game_id>/players', methods=['POST'])
+def create_player(game_id):
+    if room.has_game_started(game_id):
+        return '', 502
+    name = request.json['name']
+    player_id = room.add_player_to_lobby(game_id, name)
+    return {'player_id': player_id}
+
+
+@app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>/leave',
+           methods=['DELETE'])
+def leave_player(game_id, player_id):
+    game = room.get_game(game_id)
+    player = get_player(UUID(player_id), game)
+    if player is None:
+        return '', 502
+    room.remove_player_from_lobby(player_id)
+    return '', 204
+    
+
 @app.route('/blackjack/api/v1/games/<game_id>/players/<player_id>')
 def get_game(game_id, player_id):
     game = room.get_game(game_id)
@@ -105,15 +125,6 @@ def stay_player(game_id, player_id):
         game.end_current_players_turn()
         return '', 204
     return '', 502
-
-
-@app.route('/blackjack/api/v1/games/<game_id>/players', methods=['POST'])
-def create_player(game_id):
-    if room.has_game_started(game_id):
-        return '', 502
-    name = request.json['name']
-    player_id = room.add_player_to_lobby(game_id, name)
-    return {'player_id': player_id}
 
 
 def run():
