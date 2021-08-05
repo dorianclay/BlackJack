@@ -122,4 +122,9 @@ export class BlackjackService {
       playerRequest
     );
   }
+
+  leavePlayer(gameId: string, playerId: string): void {
+    console.log('Player leaving.');
+    this.http.delete<void>(`${this.endpoint}/api/v1/games/${gameId}/players/${playerId}/leave`);
+  }
 }
