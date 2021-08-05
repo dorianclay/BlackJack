@@ -6,20 +6,39 @@ from server.lobby import Lobby
 
 class LobbyTestCase(unittest.TestCase):
 
+    def test_add_player(self):
+        lobby = Lobby()
+        expected_player = Player('Thor')
+        lobby.add_player(expected_player)
+        self.assertEqual(lobby.players, [expected_player])
+    
     def test_player_exists_true(self):
         lobby = Lobby()
         expected_player = Player('Bob')
-        lobby.players.append(expected_player)
         lobby.players.append(Player('Alice'))
+        lobby.players.append(expected_player)
         lobby.players.append(Player('Thor'))
-        self.assertTrue(lobby.player_exists(expected_player.id))
+        self.assertEqual(1, lobby.player_exists(expected_player.id))
 
     def test_player_exists_false(self):
         lobby = Lobby()
         unexpected_player = Player('Bob')
-        lobby.player.append(Player('Alice'))
-        lobby.player.append(Player('Thor'))
-        self.assertFalse(lobby.player_exists(unexpected_player.id))
+        lobby.players.append(Player('Alice'))
+        lobby.players.append(Player('Thor'))
+        self.assertEqual(-1, lobby.player_exists(unexpected_player.id))
+
+    def test_remove_player(self):
+        lobby = Lobby()
+        unexpected_player = Player('Thor')
+        lobby.add_player(unexpected_player)
+        lobby.remove_player(unexpected_player.id)
+        self.assertEqual(lobby.players, [])
+
+    def test_remove_player_no_player(self):
+        lobby = Lobby()
+        unexpected_player = Player('Loki')
+        lobby.add_player(Player('Thor'))
+        self.assertRaises(ValueError, lobby.remove_player, unexpected_player.id)
     
     def test_get_ready_players(self):
         lobby = Lobby()

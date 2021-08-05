@@ -4,6 +4,7 @@ from library.deck import Deck
 from library.game_deck import GameDeck
 from library.player import Player
 from server.room import Room
+from server.lobby import Lobby
 from src.blackjack.blackjack_dealer import BlackjackDealer
 from src.blackjack.blackjack_game import BlackjackGame
 
@@ -44,6 +45,81 @@ class RoomTestCase(unittest.TestCase):
         room = Room()
         room.add_game(game)
         self.assertIsNone(room.get_game(id_str))
+
+    def test_get_lobby(self):
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        game_id = room.add_game(game)
+        self.assertEqual(room.games.get(str(game_id)).lobby, room.get_lobby(str(game_id)))
+
+    def test_get_lobby_invalid_id(self):
+        id_str = 'code-code-code'
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        room.add_game(game)
+        self.assertIsNone(room.get_lobby(str(id_str)))
+
+    def test_add_player_to_lobby(self):
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        game_id = room.add_game(game)
+        player_id = room.add_player_to_lobby(game_id, 'Thor')
+        self.assertEqual(room.games.get(str(game_id)).lobby.players[0].id, player_id)
+
+    def test_add_player_to_lobby_no_game(self):
+        id_str = 'code-code-code'
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        player_id = room.add_player_to_lobby(id_str, 'Thor')
+        self.assertIsNone(player_id)
+
+    def test_add_player_to_lobby_invalid_id(self):
+        id_str = 'code-code-code'
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        room.add_game(game)
+        player_id = room.add_player_to_lobby(id_str, 'Thor')
+        self.assertIsNone(player_id)
+
+    def test_remove_player_from_lobby(self):
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        game_id = room.add_game(game)
+        player_id = room.add_player_to_lobby(game_id, 'Thor')
+        removed_player = room.remove_player_from_lobby(game_id, player_id)
+        self.assertEqual(-1, room.get_lobby(game_id).player_exists(player_id))
+    
+    def test_remove_player_from_lobby_invalid_id(self):
+        id_str = 'code-code-code'
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        game_id = room.add_game(game)
+        player_id = room.add_player_to_lobby(game_id, 'Thor')
+        self.assertIsNone(room.remove_player_from_lobby(id_str, player_id))
+
+    def test_remove_player_from_lobby_no_player(self):
+        id_str = 'code-code-code'
+        deck = GameDeck([Deck()])
+        dealer = BlackjackDealer(deck)
+        game = BlackjackGame(dealer, [])
+        room = Room()
+        game_id = room.add_game(game)
+        room.add_player_to_lobby(game_id, 'Thor')
+        self.assertRaises(ValueError, room.remove_player_from_lobby, game_id, id_str)
 
     def test_has_started_returns_true(self):
         deck = GameDeck([Deck()])
