@@ -47,11 +47,11 @@ class Room:
         '''
         @param self: the room object.
         @param game_id: the ID of the game to remove the player from.
-        @param player: the Player object to be removed.
+        @param player_id: the ID of the player to be removed.
         '''
         game_context = self.games.get(game_id)
         if not game_context:
-            return None
+            return
         game_context.lobby.remove_player(player_id)
 
     def has_game_started(self, game_id):
