@@ -1,6 +1,6 @@
-import { Component, OnInit, ɵɵqueryRefresh } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { interval, Observable } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { Card } from 'src/app/card';
 import { PlayerModel } from 'src/app/player/player-model';
 import {
@@ -15,20 +15,20 @@ import { ResultsModel } from '../results-model';
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit {
+  private intervalSubscription?: Subscription;
+
   public gameId: string = '';
   private playerId: string = '';
 
   public canStart = false;
   public hasStarted = false;
+  public isReady = false;
 
   public you?: PlayerModel;
-
   public otherPlayers: PlayerModel[] = [];
   public playersInLobby: string[] = [];
 
   public results?: ResultsModel;
-
-  public isReady = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,12 +42,18 @@ export class GameComponent implements OnInit {
       this.fetchGame();
     });
 
-    interval(500).subscribe(() => {
+    this.intervalSubscription = interval(500).subscribe(() => {
       this.fetchGame();
     });
   }
 
   ngOnDestroy(): void {
+    this.intervalSubscription?.unsubscribe();
+  }
+
+  @HostListener('window:beforeunload', [ '$event' ])
+  beforeUnloadHandler(event: OnBeforeUnloadEventHandler): void {
+    console.log('Running leave player service.');
     this.blackjackService.leavePlayer(this.gameId, this.playerId);
   }
 
