@@ -10,7 +10,7 @@ class Lobby():
     def remove_player(self, player_id):
         index = self.player_exists(player_id)
         if index < 0:
-            raise ValueError('Player does not exist.')
+            raise ValueError(f'Player {player_id} does not exist.')
         self.players.pop(index)
 
     def player_exists(self, player_id):
