@@ -9,6 +9,7 @@ body {
   align-content: stretch;
   align-items: stretch;
   height: 100vh;
+  background-color: var(--bg-color);
 }
  
 app-root {
@@ -23,10 +24,6 @@ app-root {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-body {
-  background-color: var(--bg-color);
 }
 
 h1 {
