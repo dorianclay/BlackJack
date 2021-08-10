@@ -2,6 +2,7 @@ from uuid import UUID
 
 from flask import Flask, request
 from flask_cors import CORS
+from flask_sockets import Sockets
 from library.deck import Deck
 from library.game_deck import GameDeck
 from server.room import Room
@@ -13,6 +14,7 @@ from uuid import UUID
 
 app = Flask(__name__)
 CORS(app)
+sockets = Sockets(app)
 
 room = Room()
 
