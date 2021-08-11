@@ -12,6 +12,8 @@ from src.blackjack.metadata.game_metadata import GameMetadata
 from src.blackjack.validation import Validation
 from uuid import UUID
 
+from waitress import serve
+
 app = Flask(__name__)
 CORS(app)
 sockets = Sockets(app)
@@ -129,5 +131,12 @@ def stay_player(game_id, player_id):
     return '', 502
 
 
+@sockets.route('/helloworld')
+def hello_world(ws):
+    while not ws.closed:
+        message = ws.receive()
+        ws.send(message)
+
+
 def run():
-    app.run()
+    serve(app, host='0.0.0.0', port=5000)
