@@ -12,8 +12,6 @@ from src.blackjack.metadata.game_metadata import GameMetadata
 from src.blackjack.validation import Validation
 from uuid import UUID
 
-from waitress import serve
-
 app = Flask(__name__)
 CORS(app)
 sockets = Sockets(app)
@@ -139,4 +137,4 @@ def hello_world(ws):
 
 
 def run():
-    serve(app, host='0.0.0.0', port=5000)
+    app.run()

@@ -1,6 +1,5 @@
 flask
 flask-cors
 yapf
-# gunicorn
-waitress
+gunicorn
 Flask-Sockets
