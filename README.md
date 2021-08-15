@@ -3,6 +3,8 @@ A project to practice the SOLID OOP Design Principles.
 
 *Play the game at [io.dorianclay.com](http://io.dorianclay.com), hosted on Google Cloud Platform!*
 
+![Screenshot of Blackjack game](/web/blackjack/src/blackjack_with_cards_thumbnail.png)
+
 #
 
 ## Why Object Oriented Programming
