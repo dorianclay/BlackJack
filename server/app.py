@@ -129,6 +129,11 @@ def stay_player(game_id, player_id):
     return '', 502
 
 
+@app.route('/hello')
+def hello_test():
+    return 'Hello!'
+    
+
 @sockets.route('/helloworld')
 def hello_world(ws):
     while not ws.closed:
