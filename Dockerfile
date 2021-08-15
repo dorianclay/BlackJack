@@ -7,4 +7,4 @@ COPY requirements.txt /app/
 COPY gun.py /app/
 COPY run_server.sh /app/
 RUN pip3 install -r requirements.txt
-RUN bash run_server.sh
+CMD ["bash", "run_server.sh"]
