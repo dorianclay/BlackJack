@@ -1,4 +1,4 @@
-FROM python3.9-slim
+FROM python3.9
 WORKDIR /app
 COPY /library /app/
 COPY /server /app/
