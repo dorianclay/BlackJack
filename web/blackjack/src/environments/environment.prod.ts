@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "http://io.dorianclay.com"
+  apiUrl: "https://blackjack-api-dlddqpkonq-uw.a.run.app"
 };
