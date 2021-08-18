@@ -7,5 +7,7 @@ COPY /server /app/server
 COPY /src /app/src
 COPY gun.py /app/
 COPY run_server.sh /app/
+ENV PORT=5000
+ENV HOST=0.0.0.0
 EXPOSE 5000
 CMD ["bash", "run_server.sh"]
