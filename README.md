@@ -49,7 +49,7 @@ If we have to create a robot duck, don't subclass duck. A separate class should 
 
 E.g. we have a data access layer, we shouldn't do something or have properties that require special attention.
 
-### **I:**
+### **I:** Interface Segregation Principle
 
 Interfaces should be small and specific, with no unnecessary methods. This allows the client to be free of dependency on unnecessary methods.
 
